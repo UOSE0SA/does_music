@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎵DoesMusic - 音乐播放器</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 左侧边栏 -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>我的音乐</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li data-target="favorites">
+                <i class="fas fa-heart"></i> 我喜欢
+            </li>
+            <li data-target="playlists">
+                <i class="fas fa-list"></i> 我的歌单
+            </li>
+        </ul>
+    </div>
+
+    <!-- 右侧内容区 -->
+    <div class="main-container" id="mainContainer">
+        <!-- 顶部导航栏 -->
+        <header class="top-bar">
+            <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+            <a href="index.html" class="logo">
+                🎵<span>DoesMusic</span>
+            </a>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="搜索歌曲、歌手、专辑..." id="searchInput">
+            </div>
+            <h6>Release 1.2.5</h6>
+        </header>
+        
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 精选专辑 -->
+            <div class="music-section">
+                <div class="section-header">
+                    <h2 class="section-title">精选专辑</h2>
+                    <button class="toggle-btn" data-target="featuredAlbums"><i class="fas fa-minus"></i></button>
+                </div>
+                <div class="album-container" id="featuredAlbums">
+                    <!-- 专辑将通过JavaScript动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 音乐库 -->
+            <div class="music-section">
+                <div class="section-header">
+                    <h2 class="section-title">音乐库</h2>
+                    <button class="toggle-btn" data-target="musicLibrary"><i class="fas fa-minus"></i></button>
+                </div>
+                <div class="album-container" id="musicLibrary">
+                    <!-- 音乐库内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 详情侧边栏 -->
+    <div class="detail-sidebar" id="detailSidebar">
+        <div class="detail-content" id="detailContent"></div>
+    </div>
+    <div class="overlay" id="overlay"></div>
+
+    <!-- 底部播放栏 -->
+    <div class="player-bar" id="playerBar">
+        <div class="player-cover" id="playerCover">💽</div>
+        <div class="player-info">
+            <div class="player-title" id="playerTitle">未播放</div>
+            <div class="player-artist" id="playerArtist">-</div>
+        </div>
+        
+        <div class="player-progress">
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="time-info">
+                <span id="currentTime">00:00</span>
+                <span id="duration">00:00</span>
+            </div>
+        </div>
+        
+        <div class="player-controls">
+            <button class="player-btn" id="likeBtn" title="喜欢"><i class="far fa-heart"></i></button>
+            <button class="player-btn secondary" id="repeatBtn" title="列表循环">🔁</button>
+            <button class="player-btn" id="playBtn" title="播放"><i class="fas fa-play"></i></button>
+            <button class="player-btn" id="addToPlaylistBtn" title="添加到歌单"><i class="fas fa-plus"></i></button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
