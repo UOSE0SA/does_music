@@ -1,0 +1,155 @@
+/* about.css - 优化版 */
+/* 核心布局调整 */
+.about-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    background: #ffffff;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* 标题系统 */
+.about-title {
+    font-size: 2.2rem;
+    text-align: center;
+    letter-spacing: -0.5px;
+    margin-bottom: 35px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.about-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: #1db954;
+}
+
+/* 区块标题（保持主题色） */
+.section-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #333;
+    margin: 40px 0 25px;
+    padding-left: 15px;
+    border-left: 4px solid #1db954;
+}
+
+/* 艺术家列表重构 */
+.artist-list {
+    columns: 3;
+    column-gap: 25px;
+    margin-bottom: 40px;
+}
+
+.artist-item {
+    padding: 12px 15px;
+    margin-bottom: 12px;
+    background: #f8f8f8;
+    border-radius: 6px;
+    break-inside: avoid;
+    transition: transform 0.2s ease;
+    cursor: default;
+}
+
+.artist-item:hover {
+    transform: translateX(5px);
+    background: #f0f0f0;
+}
+
+/* 响应式调整 */
+@media (max-width: 992px) {
+    .artist-list {
+        columns: 2;
+        column-gap: 20px;
+    }
+
+    .about-title {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-content {
+        padding: 25px 15px;
+    }
+
+    .section-title {
+        font-size: 1.4rem;
+        margin: 35px 0 20px;
+    }
+
+    .artist-list {
+        columns: 1;
+    }
+
+    .artist-item {
+        padding: 10px 12px;
+    }
+}
+
+/* 返回按钮优化 */
+.nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 25px;
+    background: #f8f8f8;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: #1db954;
+    color: white !important;
+}
+
+.nav-btn i {
+    transition: transform 0.3s ease;
+}
+
+.nav-btn:hover i {
+    transform: translateX(-3px);
+}
+
+/* 页脚声明 */
+.copyright {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 40px;
+    padding-top: 25px;
+    border-top: 1px solid #eee;
+}
+
+/* 团队模块保持原样 */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.team-member {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.member-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #1db954;
+    margin-bottom: 8px;
+}
+
+.member-role {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}

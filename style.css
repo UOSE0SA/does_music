@@ -173,7 +173,7 @@ body {
     font-size: 20px;
 }
 
-/* 底部播放栏 */
+/* 修复版播放栏样式 */
 .player-bar {
     position: fixed;
     bottom: 0;
@@ -186,8 +186,10 @@ body {
     align-items: center;
     padding: 0 30px;
     z-index: 100;
+    gap: 20px;
 }
 
+/* 封面区域 */
 .player-cover {
     width: 60px;
     height: 60px;
@@ -197,14 +199,17 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 30px;
-    margin-right: 20px;
+    flex-shrink: 0;
     background-size: cover;
     background-position: center;
 }
 
+/* 歌曲信息区域修复 */
 .player-info {
-    flex: 1;
-    min-width: 0;
+    flex: 0 1 auto; /* 允许收缩但不增长 */
+    min-width: 120px;
+    max-width: 200px;
+    overflow: hidden;
 }
 
 .player-title {
@@ -213,19 +218,54 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 14px;
 }
 
 .player-artist {
-    font-size: 14px;
+    font-size: 12px;
     color: #666;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.player-progress {
-    flex: 2;
-    margin: 0 30px;
+/* 删除原有.player-progress样式 */
+/* 新增以下样式 */
+.player-progress-container {
+    flex: 1;
+    min-width: 0;
+    padding: 0 30px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #1db954 !important; /* 强制绿色 */
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.1s linear;
+    position: relative;
+    z-index: 2;
+}
+
+.progress-container {
+    height: 4px;
+    background-color: #eee;
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+/* 增大点击热区 */
+.progress-container::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    z-index: 1;
 }
 
 .progress-container {
@@ -235,6 +275,9 @@ body {
     border-radius: 2px;
     cursor: pointer;
     margin-bottom: 5px;
+    position: relative;
+    /* 新增点击区域处理 */
+    overflow: visible; /* 允许伪元素溢出 */
 }
 
 .progress-bar {
@@ -242,56 +285,125 @@ body {
     background-color: #1db954;
     border-radius: 2px;
     width: 0%;
+    transition: width 0.15s linear;
+    position: relative;
+    z-index: 1;
+}
+
+/* 修改伪元素样式 */
+.progress-container::after {
+    content: "";
+    position: absolute;
+    top: -10px;       /* 增大垂直点击区域 */
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    z-index: 0;      /* 降低层级避免覆盖进度条 */
+    pointer-events: none; /* 允许穿透点击 */
 }
 
 .time-info {
     display: flex;
     justify-content: space-between;
-    font-size: 12px;
+    font-size: 11px;
     color: #666;
 }
 
+/* 右侧控制按钮区域 */
 .player-controls {
     display: flex;
     align-items: center;
+    gap: 12px;
+    margin-left: auto;
 }
 
+/* 通用按钮样式 */
 .player-btn {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
-    background-color: #1db954;
-    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 15px;
     cursor: pointer;
     border: none;
-    font-size: 16px;
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.player-btn:hover {
-    background-color: #19a84c;
-    transform: scale(1.1);
+/* 播放按钮 - 主题绿色 */
+#playBtn {
+    background-color: #1db954 !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);
 }
 
+#playBtn:hover {
+    background-color: #19a84c !important;
+    transform: scale(1.1) rotate(0deg);
+}
+
+/* 其他按钮 - 淡灰色背景 */
 .player-btn.secondary {
-    background-color: transparent;
+    background-color: #f0f0f0;
     color: #666;
-    font-size: 20px;
+    border: 1px solid #e0e0e0;
 }
 
 .player-btn.secondary:hover {
+    background-color: #e5e5e5;
     color: #1db954;
-    background-color: #f5f5f5;
+    transform: scale(1.05);
 }
 
-.player-btn.secondary.active {
-    color: #1db954;
+/* 按钮图标微调 */
+.player-btn i {
+    position: relative;
+    left: 1px; /* 修正图标居中问题 */
 }
 
+/* 响应式修复 */
+@media (max-width: 768px) {
+    .player-bar {
+        padding: 0 20px;
+        gap: 15px;
+    }
+    
+    .player-progress-container {
+        padding: 0 20px;
+    }
+    
+    .player-info {
+        min-width: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .player-bar {
+        padding: 0 15px;
+        height: 80px;
+        gap: 10px;
+    }
+    
+    .player-cover {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+    }
+    
+    .player-info {
+        min-width: 80px;
+        max-width: 120px;
+    }
+    
+    .player-progress-container {
+        padding: 0 10px;
+    }
+    
+    .player-btn {
+        width: 36px;
+        height: 36px;
+    }
+}
 /* 音乐列表样式 */
 .music-section {
     max-width: 1200px;
@@ -475,6 +587,54 @@ body {
     width: 100%;
     height: 100%;
 }
+/* ========== 新增的图片封面样式 ========== */
+/* 这些样式不会影响现有的表情符号封面显示 */
+
+/* 播放器封面图片样式 */
+.player-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit; /* 继承父元素的圆角 */
+    display: block;
+}
+
+/* 专辑封面图片样式 */
+.album-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit; /* 继承父元素的圆角 */
+    display: block;
+}
+
+/* 侧边栏专辑封面图片样式 */
+.detail-sidebar .album-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+    display: block;
+}
+
+/* 图片加载失败时的备用样式 */
+.player-cover img[src=""],
+.player-cover img:not([src]) {
+    display: none;
+}
+
+/* 保持表情符号和图片共存时的显示 */
+.player-cover.has-emoji img {
+    position: absolute;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.player-cover.has-emoji:hover img {
+    opacity: 1;
+}
+.player-cover.has-emoji:hover .emoji-cover {
+    opacity: 0;
+}
 
 /* 新增歌单相关样式 */
 .playlist-container {
@@ -575,4 +735,401 @@ body {
 
 .toast.show {
     opacity: 1;
+}
+
+/* 专辑容器 - 横向滚动 */
+.album-scroll-container {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 20px;
+    background-color: white;
+    scrollbar-width: thin;
+    scrollbar-color: #1db954 #f0f0f0;
+}
+
+/* 自定义滚动条样式 */
+.album-scroll-container::-webkit-scrollbar {
+    height: 8px;
+}
+.album-scroll-container::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+.album-scroll-container::-webkit-scrollbar-thumb {
+    background-color: #1db954;
+    border-radius: 4px;
+}
+
+/* 专辑卡片样式 */
+.album-card {
+    flex: 0 0 180px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.album-card:hover {
+    transform: translateY(-5px);
+}
+
+.album-card-cover {
+    width: 180px;
+    height: 180px;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    margin-bottom: 10px;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.album-card-info {
+    padding: 5px;
+}
+
+.album-card-title {
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.album-card-artist {
+    font-size: 14px;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 专辑详情容器 - 放在下方 */
+.album-details-container {
+    width: 100%;
+    padding: 0 20px 20px;
+}
+
+/* 专辑详情样式 */
+.album-detail {
+    display: none;
+    width: 100%;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.album-detail.active {
+    display: block;
+}
+
+/* 专辑详情头部 */
+.album-header {
+    display: flex;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.album-cover {
+    width: 150px;
+    height: 150px;
+    border-radius: 5px;
+    margin-right: 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    background-size: cover;
+    background-position: center;
+}
+
+.album-info {
+    flex: 1;
+}
+
+.album-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.album-artist {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.album-description {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* 添加全局过渡效果 */
+.player-bar * {
+    transition: 
+        color 0.3s ease,
+        background-color 0.3s ease,
+        transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 进度条动画优化 */
+.progress-bar {
+    transition: width 0.15s linear;
+}
+
+/* 在style.css中添加以下样式修正 */
+
+/* 播放器信息强制更新 */
+.player-info {
+    will-change: transform, opacity; /* 优化动画性能 */
+}
+
+/* 进度条过渡优化 */
+.progress-bar {
+    transition: width 0.15s linear !important;
+}
+
+/* 封面加载动画 */
+.player-cover {
+    position: relative;
+    overflow: hidden;
+}
+
+.player-cover::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.1) 50%,
+        rgba(255,255,255,0) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.player-cover.loading::after {
+    opacity: 1;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* style.css 补充修正 */
+
+/* 确保进度条可点击 */
+.progress-container {
+    position: relative;
+    z-index: 1; /* 确保在层级最上方 */
+}
+
+/* 增加点击热区 */
+.progress-container::after {
+    content: "";
+    position: absolute;
+    top: -8px;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+}
+
+/* 封面容器样式修正 */
+.player-cover {
+    position: relative;
+    overflow: hidden;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+}
+
+/* 信息显示优化 */
+.player-info {
+    opacity: 1 !important; /* 强制显示 */
+    transition: opacity 0.3s;
+}
+
+/* 加载状态提示 */
+.player-cover.loading {
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    background-size: 200% 100%;
+    animation: 1.5s loading linear infinite;
+}
+
+@keyframes loading {
+    to { background-position: -200% 0; }
+}
+
+.progress-container {
+    position: relative;
+    z-index: 2; /* 确保在伪元素上层 */
+}
+
+.progress-container::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+/* 进度条容器 */
+.player-progress-container {
+    flex: 1;
+    min-width: 0;
+    padding: 0 30px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* 进度条轨道 */
+.progress-container {
+    height: 4px;
+    background-color: #eee;
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+/* 进度条填充 */
+.progress-bar {
+    height: 100%;
+    background-color: #1db954 !important; /* 强制绿色 */
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.1s linear;
+    position: relative;
+    z-index: 2;
+}
+
+/* 点击热区扩展 */
+.progress-container::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+/* 进度条容器 */
+.player-progress-container {
+    flex: 1;
+    min-width: 0;
+    padding: 0 30px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* 进度条轨道 */
+.progress-container {
+    height: 4px;
+    background-color: #eee;
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+/* 进度条填充 */
+.progress-bar {
+    height: 100%;
+    background-color: #1db954;
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+/* 时间显示 */
+.time-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* 增大点击热区 */
+.progress-container::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+}
+
+/* 确保进度条容器可见 */
+.player-progress-container {
+    width: 100%;
+    min-width: 300px; /* 添加最小宽度 */
+}
+/* 关键样式修正 */
+.progress-container {
+    position: relative;
+    height: 4px;
+    background: #eee;
+    cursor: pointer;
+    overflow: visible;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #1db954;
+    width: 0%;
+    transition: width 0.1s linear;
+    transform: translateZ(0); /* 启用GPU加速 */
+}
+
+/* 增大点击热区 */
+.progress-container::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+}
+
+/* 返回按钮优化 */
+.nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 25px;
+    background: #f8f8f8;
+    transition: all 0.3s ease;
+    color: #1db954 
+}
+
+.nav-btn:hover {
+    background: #1db954;
+    color: white;
+}
+
+.nav-btn i {
+    transition: transform 0.3s ease;
+}
+
+.nav-btn:hover i {
+    transform: translateX(-3px);
 }
